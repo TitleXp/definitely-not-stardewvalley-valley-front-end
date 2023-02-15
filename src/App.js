@@ -1,24 +1,51 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { Route, Switch } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+
+import Login from './components/Login';
+import Notification from './components/Notification';
+import Navbar from './components/Navbar';
+import Header from './components/Header';
+import FarmCard from './components/FarmCard';
+import FarmContainer from './components/FarmContainer';
+import ProductCard from './components/ProductCard';
+import ProductContainer from './components/ProductContainer';
+
 
 function App() {
+
+   const [message, setMessage] = useState("");
+   const [farms, setFarms] = useState([])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   
+    <div>
+      <Notification message={message} setMessage={setMessage} />
+      <Navbar />
+      <Header />
+      <Switch>
+
+        <Route exact path="/login">
+          <Login />
+        </Route>
+
+        <Route exact path="/farms">
+          <FarmContainer />
+        </Route>
+
+        <Route exact path="/farms/:id">
+          <FarmCard />
+        </Route>
+
+        <Route exact path="/products">
+          < ProductContainer/>
+        </Route>
+       
+      </Switch>
     </div>
+
   );
 }
 

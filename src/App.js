@@ -16,9 +16,43 @@ import ProductContainer from './components/ProductContainer';
 
 function App() {
 
-   const [message, setMessage] = useState("");
-   const [farms, setFarms] = useState([])
+  const [currentUser, setCurrentUser] = useState(null);
 
+  const [message, setMessage] = useState("");
+  const [farms, setFarms] = useState([])
+
+  useEffect(() => { // fetch authorized user
+    const fetchSetCurrentUser = async () => {
+      try {
+        const resp = await fetch("/authorized")
+        const data = await resp.json()
+        setCurrentUser(data)
+      } catch (error) {
+        alert(error)
+      }
+    }
+    fetchSetCurrentUser()
+  }, [])
+
+    useEffect(() => { // fetch farms
+        const fetchFarms = async () => {
+          try {
+            const resp = await fetch("/farms")
+            const data = await resp.json()
+            setFarms(data)
+          } catch (error) {
+            alert(error)
+          }
+        }
+        fetchFarms()
+      }, [])
+
+ if(!currentUser) {
+  // return(
+    showLogin ? <Login currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <SignUp />
+  
+  
+ } 
   return (
    
     <div>
@@ -27,12 +61,10 @@ function App() {
       <Header />
       <Switch>
 
-        <Route exact path="/login">
-          <Login />
-        </Route>
+        
 
         <Route exact path="/farms">
-          <FarmContainer />
+          <FarmContainer farms={farms} setFarms={setFarms} />
         </Route>
 
         <Route exact path="/farms/:id">

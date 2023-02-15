@@ -2,12 +2,13 @@ import React from 'react'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({setCurrentUser}) => {
 
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
+
     const handleChange = ({target: {name, value}}) => {
         setUser(current => ({
             ...current,
@@ -17,7 +18,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch("http://localhost:3000/login", {
+        fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -26,16 +27,23 @@ const Login = () => {
         })
         .then(res => {
             if(res.ok){
-                res.json().then(userObj => console.log(userObj))
+                res.json().then(setCurrentUser)
+                // useHistory here to push
             } else {
                 res.json().then(errorObj => alert(errorObj.error))
             }
         })
         .catch(error => alert(error))
+        setUser({
+            email: "",
+            password: ""
+        })
     }
+
 
   return (
     <div>
+        
         <form onSubmit={handleSubmit}>
             <label htmlFor='email'>Email</label>
             <input type="text" onChange={handleChange} value={user.email} name="email" />

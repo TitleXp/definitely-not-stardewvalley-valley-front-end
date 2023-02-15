@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FarmCard = () => {
+const FarmCard = ({ id, name, location}) => {
   return (
     <div>FarmCard</div>
   )

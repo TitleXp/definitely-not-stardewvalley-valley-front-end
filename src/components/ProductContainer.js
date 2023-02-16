@@ -9,10 +9,15 @@ const ProductContainer = () => {
 
     const param = useParams()
 
+    // const mappedProducts = products.map(product => (
+    //     <ProductCard {...product} key={product.id} setProducts={setProducts} />
+    // ))
+
+
     useEffect(() => { // fetch products
         const fetchProducts = async () => {
           try {
-            const resp = await fetch(`http://localhost:3000/farms/${param.id}`)
+            const resp = await fetch(`/farms/${param.id}`)
             const data = await resp.json()
             setProducts(data)
           } catch (error) {
@@ -26,7 +31,7 @@ const ProductContainer = () => {
     <div>
         ProductContainer
             <div>
-
+                {/* {mappedProducts} */}
             </div>
     </div>
   )

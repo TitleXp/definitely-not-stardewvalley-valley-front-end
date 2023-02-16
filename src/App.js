@@ -12,6 +12,7 @@ import FarmCard from './components/FarmCard';
 import FarmContainer from './components/FarmContainer';
 import ProductCard from './components/ProductCard';
 import ProductContainer from './components/ProductContainer';
+import SignUp from './components/SignUp';
 
 
 function App() {
@@ -20,6 +21,11 @@ function App() {
 
   const [message, setMessage] = useState("");
   const [farms, setFarms] = useState([])
+  const [showLogin, setShowLogin] = useState(true)
+
+  const handleLogSign = () => {
+    setShowLogin(currentVal => !currentVal)
+  }
 
   useEffect(() => { // fetch authorized user
     const fetchSetCurrentUser = async () => {
@@ -27,6 +33,8 @@ function App() {
         const resp = await fetch("/authorized")
         const data = await resp.json()
         setCurrentUser(data)
+        console.log(data)
+        // console.log(currentUser)
       } catch (error) {
         alert(error)
       }
@@ -47,17 +55,31 @@ function App() {
         fetchFarms()
       }, [])
 
+    const handleLogOut = (e) => {
+      fetch("/logout", {
+         method: "DELETE" }
+         ).then((r) => {
+        if (r.ok) {
+          setCurrentUser(null);
+        }
+      });
+    }
+
  if(!currentUser) {
-  // return(
-    showLogin ? <Login currentUser={currentUser} setCurrentUser={setCurrentUser}/> : <SignUp />
-  
-  
+    // <Navbar />
+    // <Switch>
+    //   <Route exact path="/login">
+        showLogin? <Login onClick={handleLogSign} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <SignUp onClick={handleLogSign} />
+      {/* </Route>
+    </Switch> */}
  } 
+
   return (
    
     <div>
       <Notification message={message} setMessage={setMessage} />
       <Navbar />
+      <button onClick={handleLogOut}>Log Out</button>
       <Header />
       <Switch>
 

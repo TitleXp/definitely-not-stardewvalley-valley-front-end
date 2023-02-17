@@ -107,8 +107,9 @@ function App() {
       // console.log("inside if statement")
       return (
       <>
-            <Login setCurrentUser={setCurrentUser} />
-            <SignUp setCurrentUser={setCurrentUser} />
+        {showLogin? <Login setCurrentUser={setCurrentUser} handleLogSign={handleLogSign}/> :
+            
+            <SignUp setCurrentUser={setCurrentUser} handleLogSign={handleLogSign}/> }
       </>
       )
     }
@@ -126,7 +127,6 @@ function App() {
       <Switch>
 
         
-
         <Route exact path="/farms">
           <FarmContainer farms={farms} setFarms={setFarms} />
         </Route>

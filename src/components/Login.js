@@ -46,10 +46,10 @@ const Login = ({setCurrentUser, handleLogSign}) => {
 
 
   return (
-    <div>
+    <div>Login
         
         <form onSubmit={handleSubmit}>
-            <button onClick={handleLogSign}></button>
+            <button onClick={handleLogSign}>Sign Up</button>
 
             <label htmlFor='email'>Email</label>
             <input type="text" onChange={handleChange} value={user.email} name="email" />

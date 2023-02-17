@@ -48,7 +48,7 @@ const handleSubmit = (e) => {
   return (
     <div>SignUp
         <form onSubmit={handleSubmit}>
-          <button onClick={handleLogSign}></button>
+          <button onClick={handleLogSign}>Log In</button>
           <div>
             <input type="text" name="username" placeholder='UserName' onChange={handleChange} value={newUser.username} required />
           </div>

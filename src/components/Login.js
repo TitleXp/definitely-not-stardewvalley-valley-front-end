@@ -2,7 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
-const Login = ({setCurrentUser}) => {
+const Login = ({setCurrentUser, handleLogSign}) => {
+
+    const history = useHistory()
 
     const [user, setUser] = useState({
         email: "",
@@ -26,9 +28,11 @@ const Login = ({setCurrentUser}) => {
             body: JSON.stringify(user)
         })
         .then(res => {
-            if(res.ok){
-                res.json().then(setCurrentUser)
-                // useHistory here to push
+            if(res.status === 200){
+                res.json().then(userObj => {
+                    setCurrentUser(userObj)
+                    history.push('/farms')
+                })
             } else {
                 res.json().then(errorObj => alert(errorObj.error))
             }
@@ -45,6 +49,8 @@ const Login = ({setCurrentUser}) => {
     <div>
         
         <form onSubmit={handleSubmit}>
+            <button onClick={handleLogSign}></button>
+
             <label htmlFor='email'>Email</label>
             <input type="text" onChange={handleChange} value={user.email} name="email" />
 

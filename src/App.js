@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 
@@ -8,21 +8,31 @@ import Login from './components/Login';
 import Notification from './components/Notification';
 import Navbar from './components/Navbar';
 import Header from './components/Header';
-import FarmCard from './components/FarmCard';
+// import FarmCard from './components/FarmCard';
 import FarmContainer from './components/FarmContainer';
-import ProductCard from './components/ProductCard';
+// import ProductCard from './components/ProductCard';
 import ProductContainer from './components/ProductContainer';
 import SignUp from './components/SignUp';
+import Purchases from './components/Purchases';
+import ProductFromFarmContainer from './components/ProductFromFarmContainer';
 
 
 function App() {
 
-  const [currentUser, setCurrentUser] = useState(null);
+  const history = useHistory()
 
+  const [currentUser, setCurrentUser] = useState(null);
   const [message, setMessage] = useState("");
   const [farms, setFarms] = useState([])
   const [showLogin, setShowLogin] = useState(true)
+  // const [newUser, setNewUser] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   role: ""
 
+// })
+  // console.log(currentUser)
   const handleLogSign = () => {
     setShowLogin(currentVal => !currentVal)
   }
@@ -32,8 +42,14 @@ function App() {
       try {
         const resp = await fetch("/authorized")
         const data = await resp.json()
+        if(resp.ok){
         setCurrentUser(data)
-        console.log(data)
+        // history.push('/farm')
+          }else{
+            // think about what to put here incase user isn't authorized
+        }
+        
+        // console.log(data)
         // console.log(currentUser)
       } catch (error) {
         alert(error)
@@ -48,35 +64,61 @@ function App() {
             const resp = await fetch("/farms")
             const data = await resp.json()
             setFarms(data)
+            // history.push('/farm')
           } catch (error) {
             alert(error)
           }
         }
+        if(currentUser) {
         fetchFarms()
+        history.push('/farm')
+      }
       }, [])
 
-    const handleLogOut = (e) => {
+    const handleLogOut = (e) => { // delete session/logout
       fetch("/logout", {
-         method: "DELETE" }
+         method: "DELETE", }
          ).then((r) => {
         if (r.ok) {
-          setCurrentUser(null);
+          setCurrentUser(null)
+          history.push('/');
+        } else {
+          r.json()
+          .then(err => alert(err))
         }
       });
     }
 
- if(!currentUser) {
-    // <Navbar />
-    // <Switch>
-    //   <Route exact path="/login">
-        showLogin? <Login onClick={handleLogSign} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <SignUp onClick={handleLogSign} />
-      {/* </Route>
-    </Switch> */}
- } 
+//  if(!currentUser) {
+//    return ( 
+//   <>
+    {/* <Navbar />
+      <Switch>
+        <Route exact path="/"> */}
+         {/* showLogin? <Login handleLogSign={handleLogSign} currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <SignUp handleLogSign={handleLogSign} /> */}
+        
+        {/* </Route>
+      </Switch>  */}
+  {/* </>
+     )
+  }  */}
 
+    if(!currentUser) { 
+      // console.log("inside if statement")
+      return (
+      <>
+            <Login setCurrentUser={setCurrentUser} />
+            <SignUp setCurrentUser={setCurrentUser} />
+      </>
+      )
+    }
+
+    // console.log("after if statement")
+    // console.log(currentUser)
   return (
-   
     <div>
+      {/* <Login />
+      <SignUp  newUser={newUser} setNewUser={setNewUser}/> */}
       <Notification message={message} setMessage={setMessage} />
       <Navbar />
       <button onClick={handleLogOut}>Log Out</button>
@@ -90,17 +132,24 @@ function App() {
         </Route>
 
         <Route exact path="/farms/:id">
-          <FarmCard />
+          <ProductFromFarmContainer />
         </Route>
 
         <Route exact path="/products">
           < ProductContainer/>
         </Route>
+        
+        <Route exact path="/purchases">
+          <Purchases />
+        </Route>
+        
        
       </Switch>
     </div>
 
-  );
+  )
+
+  ;
 }
 
 export default App;

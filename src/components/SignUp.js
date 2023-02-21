@@ -61,9 +61,16 @@ const handleSubmit = (e) => {
             <input type="password" name="password" placeholder='PassWord' onChange={handleChange} value={newUser.password} required />
           </div>
 
-          <div>
+          {/* <div>  // this works 
             <input type="text" name="role" placeholder='Role' onChange={handleChange} value={newUser.role} required />
-          </div>
+          </div> */}
+
+          <select required name="role" value="" onChange={handleChange}>
+          {/* <select required name="role" value="" onChange={handleChange}> */}
+            <option value="">Please select your role</option>
+            <option value="farmer" >Farmer</option>
+            <option value="buyer" >Buyer</option>
+          </select>
 
           <input type="submit" value="Create New User" />
 

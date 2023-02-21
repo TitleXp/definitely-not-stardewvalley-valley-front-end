@@ -13,7 +13,7 @@ import FarmContainer from './components/FarmContainer';
 // import ProductCard from './components/ProductCard';
 import ProductContainer from './components/ProductContainer';
 import SignUp from './components/SignUp';
-import Purchases from './components/Purchases';
+import PurchaseContainer from './components/PurchaseContainer';
 import ProductFromFarmContainer from './components/ProductFromFarmContainer';
 
 
@@ -25,17 +25,12 @@ function App() {
   const [message, setMessage] = useState("");
   const [farms, setFarms] = useState([])
   const [showLogin, setShowLogin] = useState(true)
-  // const [newUser, setNewUser] = useState({
-  //   username: "",
-  //   email: "",
-  //   password: "",
-  //   role: ""
 
-// })
   // console.log(currentUser)
   const handleLogSign = () => {
     setShowLogin(currentVal => !currentVal)
   }
+
 
   useEffect(() => { // fetch authorized user
     const fetchSetCurrentUser = async () => {
@@ -45,10 +40,9 @@ function App() {
         if(resp.ok){
         setCurrentUser(data)
         // history.push('/farm')
-          }else{
+          }else {
             // think about what to put here incase user isn't authorized
         }
-        
         // console.log(data)
         // console.log(currentUser)
       } catch (error) {
@@ -64,15 +58,16 @@ function App() {
             const resp = await fetch("/farms")
             const data = await resp.json()
             setFarms(data)
+            // console.log(data)
             // history.push('/farm')
-          } catch (error) {
-            alert(error)
-          }
-        }
-        if(currentUser) {
-        fetchFarms()
-        history.push('/farm')
-      }
+              } catch (error) {
+                alert(error)
+              }
+            }
+              if(currentUser) {
+              fetchFarms()
+              history.push('/farm')
+              }
       }, [])
 
     const handleLogOut = (e) => { // delete session/logout
@@ -88,6 +83,7 @@ function App() {
         }
       });
     }
+
 
 //  if(!currentUser) {
 //    return ( 
@@ -121,7 +117,7 @@ function App() {
       {/* <Login />
       <SignUp  newUser={newUser} setNewUser={setNewUser}/> */}
       <Notification message={message} setMessage={setMessage} />
-      <Navbar />
+      <Navbar currentUser={currentUser} />
       <button onClick={handleLogOut}>Log Out</button>
       <Header />
       <Switch>
@@ -139,8 +135,9 @@ function App() {
           < ProductContainer/>
         </Route>
         
+        
         <Route exact path="/purchases">
-          <Purchases />
+          <PurchaseContainer currentUser={currentUser} />
         </Route>
         
        

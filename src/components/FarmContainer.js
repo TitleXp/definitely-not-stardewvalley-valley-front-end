@@ -5,11 +5,11 @@ import FarmCard from './FarmCard'
 const FarmContainer = ({setFarms, farms }) => {
 
   
-    const mappedFarms = farms.map(farm => (
+  const mappedFarms = farms.map(farm => (
         <FarmCard {...farm} key={farm.id} setFarms={setFarms} />
     ))
 
-    
+  // console.log(mappedFarms)
 
   return (
     <div>

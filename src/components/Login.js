@@ -50,12 +50,15 @@ const Login = ({setCurrentUser, handleLogSign}) => {
         
         <form onSubmit={handleSubmit}>
             <button onClick={handleLogSign}>Sign Up</button>
+            <div>
+                <label htmlFor='email'>Email</label>
+                <input type="text" onChange={handleChange} value={user.email} name="email" />
+            </div>
 
-            <label htmlFor='email'>Email</label>
-            <input type="text" onChange={handleChange} value={user.email} name="email" />
-
-            <label></label>
-            <input type="password" onChange={handleChange} value={user.password} name="password" />
+            <div>
+                <label>Password</label>
+                <input type="password" onChange={handleChange} value={user.password} name="password" />
+            </div>
 
             <input type="submit" value="Login" />
         </form>
